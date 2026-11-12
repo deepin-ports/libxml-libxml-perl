@@ -1,3 +1,12 @@
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-8deepin1) unstable; urgency=medium
+
+  * Lower the minimum libxml2 version from 2.15 to
+    2.12.7+dfsg+really2.9.14, the version deepin currently ships.
+    Debian's lower bound (added in 2.0207+dfsg+really+2.0134-7) made the
+    package uninstallable against deepin's libxml2.
+
+ -- purofle <purofle@gmail.com>  Thu, 12 Nov 2026 19:03:45 +0800
+
 libxml-libxml-perl (2.0207+dfsg+really+2.0134-8) unstable; urgency=medium
 
   * Team upload.

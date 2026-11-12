@@ -13,7 +13,9 @@ XML_LIBS := $(shell $(PKG_CONFIG) --libs   libxml-2.0)
 XML_INC  := $(shell $(PKG_CONFIG) --cflags libxml-2.0)
 
 # also in libxml-libxslt-perl
-XML_VER_MIN        = 2.15
+# deepin: libxml2 is still 2.12.7+dfsg+really2.9.14; Debian's 2.15 lower
+# bound would make the package uninstallable.
+XML_VER_MIN        = 2.12.7+dfsg+really2.9.14
 XML_BIN            = $(shell grep -Po 'libxml2[\w-]*' $(TMP).substvars)
 XML_VER_SUBST      = -Vlibxml:Depends="$(XML_BIN) (>= $(XML_VER_MIN))"
 
