@@ -1,3 +1,79 @@
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-8) unstable; urgency=medium
+
+  * Team upload.
+  * fix: replace domParseChar with xmlValidateName to prevent OOB UTF-8 read
+    (CVE-2026-8177) (Closes: #1136300)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 24 May 2026 21:22:59 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-7) unstable; urgency=medium
+
+  * Drop upper bound of libxml2 dependency and add minimum lower bound
+    (libxml2 without warnings).
+    Thanks to Matthias Klose for the bug report. (Closes: #1119026)
+  * Remove «Priority: optional», which is the current default.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 21 Nov 2025 18:46:34 +0100
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-6) unstable; urgency=medium
+
+  * Backport two patches from Ubuntu (87.diff, libxml2.14-disable-
+    tests.diff) for compatibility with libxml 2.14.x. (Closes: #1106827)
+  * Generate package name for libxml2* dependencies during build.
+  * Declare compliance with Debian Policy 4.7.2.
+  * Remove Rules-Requires-Root: no.
+  * Update years of packaging copyright.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 15 Aug 2025 02:43:46 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-5) unstable; urgency=medium
+
+  * Change calculation of libxml2 dependencies if libxml2-dev contains
+    "+really".
+    We can't use the realy library version (2.9) as found via pkg-config with
+    a synthetic package version (2.12.7+dfsg+really2.9.14-0.1).
+    Thanks to Sebastian Ramacher for the bug report. (Closes: #1082828)
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 27 Sep 2024 14:20:26 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-4) unstable; urgency=medium
+
+  * Add patch from upstream Git to fix failures with GCC-14.
+    (Closes: #1075219)
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 07 Jul 2024 23:14:44 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload acked by gregor herrmann.
+  * Attempt to fix FTBFS #1072012 via importing upstream commit
+    5a6c6afdf1d87cb13699064647cfb24cc9131fe5 as
+    patches/0001-initialize-xmlValidCtxt.patch.
+
+ -- Helmut Grohne <helmut@subdivi.de>  Thu, 06 Jun 2024 14:28:34 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-3) unstable; urgency=medium
+
+  * Calculate libxml2 dependencies during build.
+    libxml2 issues warnings when the minor version is different at build and
+    runtime. Ensure that we have the same minor version at runtime, and
+    trigger a rebuild once it changes. Cf. #1072012
+    Thanks to Niko Tyni for the proposal.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 31 May 2024 20:21:00 +0200
+
+libxml-libxml-perl (2.0207+dfsg+really+2.0134-2) unstable; urgency=medium
+
+  * Add patch from upstream Git repo (and 2.0209 release) to fix a test
+    failure with libxml2 >= 2.11.
+    Thanks to Aron Xu for the bug report. (Closes: #1072012)
+  * Refresh lintian overrides (formatting),
+  * Update years of packaging copyright.
+  * debian/control: replace pkg-config with pkgconf.
+  * Declare compliance with Debian Policy 4.7.0.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 27 May 2024 19:27:41 +0200
+
 libxml-libxml-perl (2.0207+dfsg+really+2.0134-1) unstable; urgency=medium
 
   * Team upload

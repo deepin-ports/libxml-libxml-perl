@@ -1,0 +1,84 @@
+Description: Fix test suite with libxml2 2.13.0
+ (shortened to the tests we actually run)
+Origin: https://github.com/shlomif/perl-XML-LibXML/pull/87
+ via Ubuntu
+Forwarded: https://github.com/shlomif/perl-XML-LibXML/pull/87
+Bug-Debian: https://bugs.debian.org/1106827
+Author: Nick Wellnhofer <wellnhofer@aevum.de>
+Reviewed-by: gregor herrmann <gregoa@debian.org>
+Last-Update: 2025-08-14
+
+--- a/t/02parse.t
++++ b/t/02parse.t
+@@ -14,7 +14,7 @@
+ 
+ POSIX::setlocale(LC_ALL, "C");
+ 
+-use Test::More tests => 533;
++use Test::More tests => 531;
+ use IO::File;
+ 
+ use XML::LibXML::Common qw(:libxml);
+@@ -771,15 +771,6 @@
+ 
+     my $newkid = $root->appendChild( $doc->createElement( "bar" ) );
+     is( $newkid->line_number(), 0, "line number is 0");
+-
+-    $parser->line_numbers(0);
+-    eval { $doc = $parser->parse_string( $goodxml ); };
+-
+-    $root = $doc->documentElement();
+-    is( $root->line_number(), 0, "line number is 0");
+-
+-    @kids = $root->childNodes();
+-    is( $kids[1]->line_number(), 0, "line number is 0");
+ }
+ 
+ SKIP: {
+@@ -882,7 +873,12 @@
+         eval {
+            $doc2    = $parser->parse_string( $xmldoc );
+         };
+-        isnt($@, '', "error parsing $xmldoc");
++        # https://gitlab.gnome.org/GNOME/libxml2/-/commit/b717abdd
++        if (XML::LibXML::LIBXML_RUNTIME_VERSION() < 21300) {
++            isnt($@, '', "error parsing $xmldoc");
++        } else {
++            is( $doc2->documentElement()->firstChild()->nodeName(), "foo" );
++        }
+ 
+         $parser->validation(1);
+ 
+--- a/t/08findnodes.t
++++ b/t/08findnodes.t
+@@ -123,7 +123,13 @@
+ my @ns = $root->findnodes('namespace::*');
+ # TEST
+ 
+-is(scalar(@ns), 2, ' TODO : Add test name' );
++# https://gitlab.gnome.org/GNOME/libxml2/-/commit/aca16fb3
++# fixed xmlCopyNamespace with XML namespace.
++if (XML::LibXML::LIBXML_RUNTIME_VERSION() < 21300) {
++    is(scalar(@ns), 2, ' TODO : Add test name' );
++} else {
++    is(scalar(@ns), 3, ' TODO : Add test name' );
++}
+ 
+ # bad xpaths
+ # TEST:$badxpath=4;
+--- a/t/16docnodes.t
++++ b/t/16docnodes.t
+@@ -60,7 +60,12 @@
+     $doc->setDocumentElement($node);
+ 
+     # TEST
+-    is( $node->serialize(), '<test contents="&#xE4;"/>', 'Node serialise works.' );
++    # libxml2 2.14 avoids unnecessary escaping of attribute values.
++    if (XML::LibXML::LIBXML_VERSION() >= 21400) {
++        is( $node->serialize(), "<test contents=\"\xE4\"/>", 'Node serialise works.' );
++    } else {
++        is( $node->serialize(), '<test contents="&#xE4;"/>', 'Node serialise works.' );
++    }
+ 
+     $doc->setEncoding('utf-8');
+     # Second output
